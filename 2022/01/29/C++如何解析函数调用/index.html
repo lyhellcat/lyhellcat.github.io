@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="C++如何解析函数调用1234567891011121314151617181920namespace galaxy &amp;#123;struct Asteroid &amp;#123;    float radius &#x3D; 12;&amp;#125;;void blast(Asteroid *ast, float force);&amp;#125;  &#x2F;&#x2F; namespace galaxystruct Target &amp;#12">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hexo">
+<meta property="og:url" content="http://example.com/2022/01/29/C++%E5%A6%82%E4%BD%95%E8%A7%A3%E6%9E%90%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="C++如何解析函数调用1234567891011121314151617181920namespace galaxy &amp;#123;struct Asteroid &amp;#123;    float radius &#x3D; 12;&amp;#125;;void blast(Asteroid *ast, float force);&amp;#125;  &#x2F;&#x2F; namespace galaxystruct Target &amp;#12">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://raw.githubusercontent.com/lyhellcat/Pic/master/img/image-20220129190718607.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lyhellcat/Pic/master/img/image-20220129191408158.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lyhellcat/Pic/master/img/image-20220129191708829.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lyhellcat/Pic/master/img/image-20220129191828006.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lyhellcat/Pic/master/img/image-20220129193422710.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lyhellcat/Pic/master/img/image-20220129193637604.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lyhellcat/Pic/master/img/image-20220129193752141.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lyhellcat/Pic/master/img/image-20220129194740226.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lyhellcat/Pic/master/img/image-20220129194833768.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lyhellcat/Pic/master/img/image-20220129202831247.png">
+<meta property="article:published_time" content="2022-01-29T14:16:27.590Z">
+<meta property="article:modified_time" content="2022-01-29T12:45:23.776Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/lyhellcat/Pic/master/img/image-20220129190718607.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-C++如何解析函数调用" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/01/29/C++%E5%A6%82%E4%BD%95%E8%A7%A3%E6%9E%90%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8/" class="article-date">
+  <time class="dt-published" datetime="2022-01-29T14:16:27.590Z" itemprop="datePublished">2022-01-29</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="C-如何解析函数调用"><a href="#C-如何解析函数调用" class="headerlink" title="C++如何解析函数调用"></a>C++如何解析函数调用</h1><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">namespace</span> galaxy &#123;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Asteroid</span> &#123;</span></span><br><span class="line">    <span class="keyword">float</span> radius = <span class="number">12</span>;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">blast</span><span class="params">(Asteroid *ast, <span class="keyword">float</span> force)</span></span>;</span><br><span class="line">&#125;  <span class="comment">// namespace galaxy</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Target</span> &#123;</span></span><br><span class="line">    galaxy::Asteroid *ast;</span><br><span class="line">    <span class="built_in">Target</span>(galaxy::Asteroid *ast) : ast&#123;ast&#125; &#123;&#125;</span><br><span class="line">    <span class="keyword">operator</span> galaxy::Asteroid*() <span class="keyword">const</span> &#123; <span class="keyword">return</span> ast; &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">blast</span><span class="params">(Target target)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt; <span class="keyword">void</span> <span class="title">blast</span><span class="params">(T* obj, <span class="keyword">float</span> force)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">play</span><span class="params">(galaxy::Asteroid *ast)</span> </span>&#123;</span><br><span class="line">    <span class="built_in">blast</span>(ast, <span class="number">100</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Name-lookup"><a href="#Name-lookup" class="headerlink" title="Name lookup"></a>Name lookup</h2><p><code>Member name lookup</code>, 当函数名位于<code>.</code>或是<code>-&gt;</code>右侧时使用<strong>Member name lookup</strong>. 例如<code>foo-&gt;bar()</code>, 该方式用于查找特定类成员. </p>
+<p><code>Qualified name lookup</code>, 当包含<code>::</code>时, 例如<code>std::sort</code>等显式指定namespace的, 将会在指定命名空间内寻找调用的函数.</p>
+<p><code>Unqualified name lookup</code>, 当编译器得到非限定名称时, 会根据上下文在不同的范围内寻找匹配的声明.</p>
+<p>对于上例的<code>blast(ast, 100);</code>, 有3个候选函数, 第1个候选函数显示了一个特性<code>argument-dependent lookup, ADL</code>, 即使调用方并未指定<code>namespace</code>为<code>galaxy</code>, 编译器仍会在参数的命名空间中寻找候选的函数. </p>
+<p><img src="https://raw.githubusercontent.com/lyhellcat/Pic/master/img/image-20220129190718607.png" alt="image-20220129190718607"></p>
+<h2 id="Special-Handling-of-Function-Templates"><a href="#Special-Handling-of-Function-Templates" class="headerlink" title="Special Handling of Function Templates"></a>Special Handling of Function Templates</h2><img src="https://raw.githubusercontent.com/lyhellcat/Pic/master/img/image-20220129191408158.png" alt="image-20220129191408158" style="zoom: 80%;" />
+
+<p><code>blast(ast, 1000)</code>并未指定模板参数, 因此编译器需要使用模板参数推导的方式确定③中的类型<code>T</code>. </p>
+<p><img src="https://raw.githubusercontent.com/lyhellcat/Pic/master/img/image-20220129191708829.png" alt="image-20220129191708829"></p>
+<p>之后编译器将会进行模板参数替换. </p>
+<p><img src="https://raw.githubusercontent.com/lyhellcat/Pic/master/img/image-20220129191828006.png" alt="image-20220129191828006"></p>
+<p>在模板参数替换失败时, template function就会从候选列表中被删除. 在模板元编程中, 称为<code>SFINAE, substitution faliure is not an error</code>. </p>
+<h2 id="Overload-Resolution-重载决议"><a href="#Overload-Resolution-重载决议" class="headerlink" title="Overload Resolution 重载决议"></a>Overload Resolution 重载决议</h2><p>在这一阶段函数模板已经消失, 只剩下一组整洁的待候选函数集合. </p>
+<p><img src="https://raw.githubusercontent.com/lyhellcat/Pic/master/img/image-20220129193422710.png" alt="image-20220129193422710"></p>
+<p>接下来的工作室进一步缩小这一集合, 确定那些函数可以处理该函数调用. </p>
+<img src="https://raw.githubusercontent.com/lyhellcat/Pic/master/img/image-20220129193637604.png" alt="image-20220129193637604" style="zoom:80%;" />
+
+<p>最明显的要求就是函数的参数列表需要兼容. </p>
+<p><img src="https://raw.githubusercontent.com/lyhellcat/Pic/master/img/image-20220129193752141.png" alt="image-20220129193752141"></p>
+<p>candidate①的第二个参数<code>float</code>可以由<code>int</code>隐式转换而来. </p>
+<p>对于candidate②, 由于<code>Target</code>有一个转换构造函数<code>Target(galaxy::Asteroid *ast) : ast&#123;ast&#125; &#123;&#125;</code>, 因此第一个参数可隐式转换为<code>Target</code>类型, 但是参数个数不匹配. 可以使用<code>explicit</code>的方式进行显式标记避免隐式转换. </p>
+<p>candidate③的参数列表与①一致, 因此也兼容. </p>
+<h2 id="Tiebreakers-决胜局"><a href="#Tiebreakers-决胜局" class="headerlink" title="Tiebreakers 决胜局"></a>Tiebreakers 决胜局</h2><p>在上例中, 只剩下2个可供调用的函数, 但是他们的参数列表都符合条件, 能够处理原始的function call. 但是编译器必须确定哪个是最好的可行函数. </p>
+<p><img src="https://raw.githubusercontent.com/lyhellcat/Pic/master/img/image-20220129194740226.png" alt="image-20220129194740226"></p>
+<img src="https://raw.githubusercontent.com/lyhellcat/Pic/master/img/image-20220129194833768.png" alt="image-20220129194833768" style="zoom:80%;" />
+
+<p>(1) Better-matching parameters wins &#x2F; 参数匹配更高者获胜</p>
+<p>C++最重视调用者的参数类型与函数参数类型的匹配程度, 总是选择从给定的参数进行较少隐式类型转换的函数. 例如对于<code>std::vector</code>的<code>operator[]</code>, 将会决定调用<code>const</code>版本还是<code>non const</code>版本. 在示例中, 2个备选函数具有相同参数列表, 因此决策进入下一局. </p>
+<p>(2) Non-template function wins &#x2F; 非模板函数取胜</p>
+<p>C++更倾向调用非模板函数而不是模板函数, 因此最终将会调用</p>
+<p><img src="https://raw.githubusercontent.com/lyhellcat/Pic/master/img/image-20220129202831247.png" alt="image-20220129202831247"></p>
+<p>(3) More specialized template wins &#x2F; 更偏特化的模板函数取胜</p>
+<p>考虑如下2个模板函数: </p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt; <span class="keyword">void</span> <span class="title">blast</span><span class="params">(T obj, <span class="keyword">float</span> force)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt; <span class="keyword">void</span> <span class="title">blast</span><span class="params">(T* obj, <span class="keyword">float</span> force)</span></span>;</span><br></pre></td></tr></table></figure>
+
+<p>第1个模板函数接收任意类型作为其第1个参数, 而第2个模板函数只接受指针类型, 因此第2个函数模板更特化. 因此, 对于上面2个函数, <code>blast(ast, 1000)</code>将会调用第2个而不是第1个. </p>
+<p><a target="_blank" rel="noopener" href="https://preshing.com/20210315/how-cpp-resolves-a-function-call/">参考博客</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2022/01/29/C++%E5%A6%82%E4%BD%95%E8%A7%A3%E6%9E%90%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8/" data-id="ckyzx3xai00005otoh08zfyu3" data-title="" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2022/01/29/leetcode%20%E7%AE%97%E6%B3%95%E6%A8%A1%E6%9D%BF/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          (no title)
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2022/01/29/hello-world/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Hello World</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2022/01/29/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%20Q&A/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2022/01/29/leetcode%20%E7%AE%97%E6%B3%95%E6%A8%A1%E6%9D%BF/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2022/01/29/C++%E5%A6%82%E4%BD%95%E8%A7%A3%E6%9E%90%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2022/01/29/hello-world/">Hello World</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2022 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

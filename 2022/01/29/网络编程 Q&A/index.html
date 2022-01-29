@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="网络编程 Q&amp;A[toc] Reactor VS. Proactor服务器程序通常需要处理3类事件: IO、信号及定时事件  Reactor模式: 主线程 (IO处理单元) 负责监听文件描述符上是否有事件发生 (可读, 可写), 如果有则立即通知工作线程将可读可写事件放入请求队列, 交给工作线程处理, 通常由同步IO实现 Proactor模式: 将所有IO都交给主线程和内核处理 (读, 写">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hexo">
+<meta property="og:url" content="http://example.com/2022/01/29/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%20Q&A/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="网络编程 Q&amp;A[toc] Reactor VS. Proactor服务器程序通常需要处理3类事件: IO、信号及定时事件  Reactor模式: 主线程 (IO处理单元) 负责监听文件描述符上是否有事件发生 (可读, 可写), 如果有则立即通知工作线程将可读可写事件放入请求队列, 交给工作线程处理, 通常由同步IO实现 Proactor模式: 将所有IO都交给主线程和内核处理 (读, 写">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-01-29T14:16:27.594Z">
+<meta property="article:modified_time" content="2022-01-18T09:51:45.211Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-网络编程 Q&amp;A" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/01/29/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%20Q&A/" class="article-date">
+  <time class="dt-published" datetime="2022-01-29T14:16:27.594Z" itemprop="datePublished">2022-01-29</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="网络编程-Q-amp-A"><a href="#网络编程-Q-amp-A" class="headerlink" title="网络编程 Q&amp;A"></a>网络编程 Q&amp;A</h1><p>[toc]</p>
+<h2 id="Reactor-VS-Proactor"><a href="#Reactor-VS-Proactor" class="headerlink" title="Reactor VS. Proactor"></a><code>Reactor</code> VS. <code>Proactor</code></h2><p>服务器程序通常需要处理3类事件: IO、信号及定时事件</p>
+<ul>
+<li><code>Reactor</code>模式: 主线程 (IO处理单元) 负责监听文件描述符上是否有事件发生 (可读, 可写), 如果有则立即通知工作线程将可读可写事件放入请求队列, 交给工作线程处理, 通常由<strong>同步IO</strong>实现</li>
+<li><code>Proactor</code>模式: 将所有IO都交给主线程和内核处理 (读, 写), 工作线程仅负责处理逻辑. e.g. 主线程读<code>users[sockfd].read()</code>, 选择工作线程处理客户请求<code>pool-&gt;append(users + sockfd)</code>. 通常由<strong>异步IO</strong>实现</li>
+</ul>
+<p>实际应用中常采用同步IO模拟<code>Proactor</code>模式</p>
+<ul>
+<li><p>主线程往epoll内核事件表注册socket上的读就绪事件</p>
+</li>
+<li><p>主线程调用epoll_wait等待socket上有数据可读</p>
+</li>
+<li><p>当socket上有数据可读，epoll_wait通知主线程,主线程从socket循环读取数据，直到没有更多数据可读，然后将读取到的数据封装成一个请求对象并插入请求队列</p>
+</li>
+<li><p>睡眠在请求队列上某个工作线程被唤醒，它获得请求对象并处理客户请求，然后往epoll内核事件表中注册该socket上的写就绪事件</p>
+</li>
+<li><p>主线程调用epoll_wait等待socket可写</p>
+</li>
+<li><p>当socket上有数据可写，epoll_wait通知主线程。主线程往socket上写入服务器处理客户请求的结果</p>
+</li>
+<li><p>半同步&#x2F;半反应堆工作流程（以Proactor模式为例）</p>
+<blockquote>
+<ul>
+<li>主线程充当异步线程，负责监听所有socket上的事件</li>
+<li>若有新请求到来，主线程接收之以得到新的连接socket，然后往epoll内核事件表中注册该socket上的读写事件</li>
+<li>如果连接socket上有读写事件发生，主线程从socket上接收数据，并将数据封装成请求对象插入到请求队列中</li>
+<li>所有工作线程睡眠在请求队列上，当有任务到来时，通过竞争（如互斥锁）获得任务的接管权</li>
+</ul>
+</blockquote>
+</li>
+</ul>
+<h2 id="epoll-select-poll-的选择"><a href="#epoll-select-poll-的选择" class="headerlink" title="epoll select poll 的选择"></a><code>epoll</code> <code>select</code> <code>poll</code> 的选择</h2><p>对于<code>select</code>和<code>poll</code>, 所有文件描述符都是在用户态被加入到文件描述符集合的, 调用时需要将整个集合拷贝到内核态. <code>epoll</code>直接将文件描述符维护在内核态, 添加文件描述符时都需要执行一个系统调用, 而系统调用的开销较大, 在很多短期活跃连接的情况下, <code>epoll</code>可能会慢于<code>select</code>和<code>poll</code>. </p>
+<p><code>select</code>使用线性表描述文件描述符集合, <code>poll</code>使用链表, <code>epoll</code>使用红黑树, 同时维护有<code>ready list</code>, 将事件表中已经就绪的事件添加到<code>ready list</code>中. 使用<code>epoll_wait</code>调用时, 只需要观察<code>list</code>中是否有数据即可. </p>
+<p><code>select</code>和<code>poll</code>的开销来自内核判断是否有文件描述符就绪. 执行<code>select</code>或<code>poll</code>调用时, 会采取遍历的方式, 判断是否有文件描述符活动. <code>epoll</code>当有活动产生时, 会自动触发<code>epoll</code>回调函数通知epoll文件描述符, 然后将就绪的文件描述符放到<code>ready list</code>中等待<code>epoll_wait</code>调用后处理.</p>
+<p>当监测的<code>fd</code>数量较小, 且各个<code>fd</code>都很活跃时, 选择<code>select</code>和<code>poll</code>. 当<code>fd</code>较多, 且单位时间内仅部分<code>fd</code>活跃时, 使用epoll会明显提升性能.</p>
+<h2 id="epoll中LT-电平触发-和ET-边缘触发-的区别"><a href="#epoll中LT-电平触发-和ET-边缘触发-的区别" class="headerlink" title="epoll中LT(电平触发)和ET(边缘触发)的区别"></a><code>epoll</code>中<code>LT(电平触发)</code>和<code>ET(边缘触发)</code>的区别</h2><ul>
+<li>LT（电平触发）：类似<code>select</code>，LT会去遍历在epoll事件表中每个文件描述符，来观察是否有我们感兴趣的事件发生，如果有（触发了该文件描述符上的回调函数），<code>epoll_wait</code>就会以非阻塞的方式返回。若该epoll事件没有被处理完（没有返回<code>EWOULDBLOCK</code>），该事件还会被后续的<code>epoll_wait</code>再次触发. </li>
+<li>ET（边缘触发）：ET在发现有我们感兴趣的事件发生后，立即返回，并且<code>sleep</code>这一事件的<code>epoll_wait</code>，不管该事件有没有结束.</li>
+</ul>
+<p>在使用ET模式时，必须要保证该文件描述符是非阻塞的（确保在没有数据可读时，该文件描述符不会一直阻塞）；并且每次调用<code>read</code>和<code>write</code>的时候都必须等到它们返回<code>EWOULDBLOCK</code>（确保所有数据都已读完或写完）</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2022/01/29/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%20Q&A/" data-id="ckyzx3xas00025otohchx0it6" data-title="" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2022/01/29/leetcode%20%E7%AE%97%E6%B3%95%E6%A8%A1%E6%9D%BF/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title"></div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2022/01/29/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%20Q&A/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2022/01/29/leetcode%20%E7%AE%97%E6%B3%95%E6%A8%A1%E6%9D%BF/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2022/01/29/C++%E5%A6%82%E4%BD%95%E8%A7%A3%E6%9E%90%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2022/01/29/hello-world/">Hello World</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2022 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
